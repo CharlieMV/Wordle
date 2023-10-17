@@ -97,19 +97,26 @@ public class Wordle
 	 */
 	public static void main(String[] args)
 	{
-		String testWord = new String("");
-		String showIt = new String("");
-
 		// Determines if args[0] and args[1] are set
 		// args[0] is "show" which means to show the word chosen
 		// args[1] is a word which is used as the chosen word
-		//System.out.println(args[0]);
-
-
+		String testWord = new String("");
+		String showIt = new String("");
+		switch (args.length) {
+			case 2:
+			testWord = args[1];
+			case 1:
+			showIt = args[0];
+			default:
+			break;
+		}
+		
 
 		Wordle run = new Wordle(showIt, testWord);
+		if (showIt.equals("show")) run.show = true;
 		run.setUpCanvas();
 		run.playGame();
+
 	}
 
 	/**
@@ -155,7 +162,7 @@ public class Wordle
 	 *	@param testWord			if this String is found in words5allowed.txt, it
 	 *							will be used to set word.
 	 *	@return					the word chosen as the "goal word".
-	 *	THIS METHOD IS INCOMPLETE.
+	 *	THIS METHOD IS COMPLETE 10/17/23.
 	 */
 	public String openFileAndChooseWord(String inFileName, String testWord)
 	{
@@ -187,8 +194,12 @@ public class Wordle
 			for (int i = 1; i < randomLineNum; i++) {
 				String temp = reader2.nextLine();
 			}
+			String newWord = reader2.nextLine();
+			/* Print the word if showIt is true */
+			if (show)
+				System.out.println(newWord);
 			/* Returns the word at line randomLineNum */
-			return reader2.nextLine();
+			return newWord;
 		}
 		catch (IOException e) {
 			System.out.print(e);
@@ -206,7 +217,15 @@ public class Wordle
 	 */
 	public boolean inAllowedWordFile(String possibleWord)
 	{
-		
+		try {
+			File list = new File(WORDS5_ALLOWED);
+			Scanner reader = new Scanner(list);
+			while(reader.hasNextLine()) {
+				// WHERE WE LEFT OFF 10/17 IN CLASS
+			}
+		} catch (IOException e) {
+			System.out.println(e);
+		}
 		return false;
 	}
 	
@@ -252,10 +271,6 @@ public class Wordle
 		// Determine color of guessed letters and draw backgrounds
 	 	// 0 for not checked yet, 1 for no match, 2 for partial, 3 for exact
 		// draw guessed letter backgrounds
-
-
-
-
 		
 		for(int row = 0; row < 6; row++)
 		{
