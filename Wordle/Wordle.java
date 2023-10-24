@@ -217,15 +217,14 @@ public class Wordle
 	 */
 	public boolean inAllowedWordFile(String possibleWord)
 	{
-		try {
-			File list = new File(WORDS5_ALLOWED);
-			Scanner reader = new Scanner(list);
-			while(reader.hasNextLine()) {
-				// WHERE WE LEFT OFF 10/17 IN CLASS
+		Scanner input = FileUtils.openToRead(WORDS5_ALLOWED);;
+		while(input.hasNextLine()) {
+			if (input.nextLine().equals(possibleWord)) {
+				input.close();
+				return true;
 			}
-		} catch (IOException e) {
-			System.out.println(e);
 		}
+		input.close();
 		return false;
 	}
 	
