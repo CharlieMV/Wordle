@@ -213,13 +213,13 @@ public class Wordle
 	 *	Returns true if the word is in the file, false otherwise.
 	 *	@param possibleWord       the word to looked for in words5allowed.txt
 	 *	@return                   true if the word is in the text file, false otherwise
-	 *	THIS METHOD IS INCOMPLETE.
+	 *	THIS METHOD IS COMPLETE 10/24/23.
 	 */
 	public boolean inAllowedWordFile(String possibleWord)
 	{
 		Scanner input = FileUtils.openToRead(WORDS5_ALLOWED);;
 		while(input.hasNextLine()) {
-			if (input.nextLine().equals(possibleWord)) {
+			if (input.nextLine().toUpperCase().equals(possibleWord.toUpperCase())) {
 				input.close();
 				return true;
 			}
@@ -245,16 +245,24 @@ public class Wordle
 		int guessNumber = 0;
 		for(int i = 0; i < wordGuess.length; i++)
 		{
-			if(wordGuess[i].length() == 5)
+			System.out.println(wordGuess[i] + " " + wordGuess[i].length() +
+										inAllowedWordFile(wordGuess[i]));
+			if(wordGuess[i].length() == 5 && inAllowedWordFile(wordGuess[i]))
 			{
 				guessNumber = i + 1;
+			} 
+			// if guess is not in words5allowed.txt then print dialog box
+			else if (wordGuess[i].length() == 5 && !inAllowedWordFile(wordGuess[i])) {
+				JOptionPane pane = new JOptionPane(wordGuess[i] + 
+											" is not a valid word");
+				JDialog d = pane.createDialog(null, "INVALID INPUT");
+				d.setLocation(365,250);
+				d.setVisible(true);
 			}
 		}
+		
 		wordGuess[guessNumber] = letters.toUpperCase();
 		letters = "";
-		
-		// else if guess is not in words5allowed.txt then print dialog box
-
 	}
 	
 	/** 
@@ -335,6 +343,7 @@ public class Wordle
 		int guessNumber = 0;
 		for(int i = 0; i < wordGuess.length; i++)
 		{
+			System.out.println(wordGuess[i] + wordGuess[i].length());
 			if(wordGuess[i].length() > 0)
 			{
 				for(int j = 0; j < wordGuess[i].length(); j++)
@@ -358,7 +367,7 @@ public class Wordle
 	 *	enters the correct word with a guess.  The game is lost when the user does
 	 *	not enter the correct word with the last (6th) guess.  An appropriate message
 	 *	is displayed to the user in the form of a JOptionPane with JDialog for a win or a loss.
-	 *	THIS METHOD IS INCOMPLETE.
+	 *	THIS METHOD IS COMPLETE 10/24/23.
 	 */
 	public void checkIfWonOrLost ( )
 	{
@@ -382,9 +391,13 @@ public class Wordle
 		}
 		
 		// else if all guesses are filled then declare loser
-		
-		
-		
+		else if(!wordGuess[5].equals("")) {
+			activeGame = false;
+			JOptionPane pane = new JOptionPane(word + " was the word!  Press RESET to begin again");
+			JDialog d = pane.createDialog(null, "Sorry!");
+			d.setLocation(365,250);
+			d.setVisible(true);
+		}
 		
 	}
 	
